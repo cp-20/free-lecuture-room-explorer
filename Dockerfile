@@ -17,7 +17,7 @@ FROM caddy:2-alpine
 WORKDIR /srv
 
 COPY Caddyfile /etc/caddy/Caddyfile
-COPY certs/*.crt /usr/local/share/ca-certificates/
+COPY certs/nii-open-domain-ca-g7-rsa.crt /usr/local/share/ca-certificates/
 COPY certs/ /srv/certs/
 RUN update-ca-certificates
 
