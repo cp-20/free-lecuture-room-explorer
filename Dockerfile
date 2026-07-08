@@ -2,7 +2,7 @@ FROM node:24-bookworm-slim AS frontend-build
 
 WORKDIR /app
 RUN apt-get update \
-	&& apt-get install -y --no-install-recommends ca-certificates \
+	&& DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends ca-certificates \
 	&& rm -rf /var/lib/apt/lists/*
 RUN corepack enable
 
@@ -17,7 +17,7 @@ FROM caddy:2-alpine
 WORKDIR /srv
 
 COPY Caddyfile /etc/caddy/Caddyfile
-COPY certs/ /usr/local/share/ca-certificates/free-lecture-room-explorer/
+COPY certs/*.crt /usr/local/share/ca-certificates/
 COPY certs/ /srv/certs/
 RUN update-ca-certificates
 
