@@ -1,0 +1,29 @@
+{
+  "name": "free-lecture-room-explorer",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "packageManager": "pnpm@11.10.0",
+  "scripts": {
+    "dev": "VITE_FACILITY_PROXY_URL=/api/facility vp dev",
+    "frontend:dev": "VITE_FACILITY_PROXY_URL=/api/facility vp dev",
+    "build": "vp build",
+    "preview": "vp preview",
+    "check": "svelte-check --tsconfig ./tsconfig.json",
+    "test": "vp test --run",
+    "docker:build": "docker build -t free-lecture-room-explorer .",
+    "caddy:run": "pnpm run build && STATIC_ROOT=dist caddy run --config Caddyfile"
+  },
+  "dependencies": {
+    "@sveltejs/vite-plugin-svelte": "^7.1.2",
+    "@lucide/svelte": "^1.23.0",
+    "svelte": "^5.56.4",
+    "vite-plus": "^0.2.2"
+  },
+  "devDependencies": {
+    "@tsconfig/svelte": "^5.0.8",
+    "jsdom": "^29.1.1",
+    "svelte-check": "^4.7.1",
+    "typescript": "^6.0.3"
+  }
+}

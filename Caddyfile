@@ -1,0 +1,35 @@
+{
+	auto_https off
+}
+
+:{$PORT:8787} {
+	root * {$STATIC_ROOT:/srv/app}
+	encode zstd gzip
+
+	@facility path /api/facility/*
+	handle @facility {
+		uri strip_prefix /api/facility
+		rewrite * /fr/Common/FacilityReservation{uri}
+		reverse_proxy https://kyomu0.gakumu.titech.ac.jp {
+			transport http {
+				tls_trust_pool file {
+					pem_file {$FACILITY_CA_G7_CERT:certs/nii-open-domain-ca-g7-rsa.crt}
+					pem_file {$FACILITY_ROOT_CA_CERT:certs/secom-security-communication-rootca2.crt}
+				}
+			}
+			header_up Host kyomu0.gakumu.titech.ac.jp
+			header_up Referer https://kyomu0.gakumu.titech.ac.jp/fr/Common/FacilityReservation/
+			header_up Accept "text/html,application/xhtml+xml"
+			header_up Accept-Language "ja,en-US;q=0.8,en;q=0.6"
+			header_up User-Agent "free-lecture-room-explorer-caddy"
+			header_down -Set-Cookie
+			header_down -Set-Cookie2
+			header_down Cache-Control "no-store"
+		}
+	}
+
+	handle {
+		try_files {path} /index.html
+		file_server
+	}
+}
