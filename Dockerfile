@@ -1,6 +1,9 @@
 FROM node:24-bookworm-slim AS frontend-build
 
 WORKDIR /app
+RUN apt-get update \
+	&& apt-get install -y --no-install-recommends ca-certificates \
+	&& rm -rf /var/lib/apt/lists/*
 RUN corepack enable
 
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
